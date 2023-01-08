@@ -1,0 +1,64 @@
+* {}
+
+body {
+    margin: 0 auto;
+}
+
+.header img {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    border-radius: 50%;
+    /* margin-left: 30%; */
+}
+
+section.top-page {
+    background: url('https://media.tenor.com/i0nzuUl-6wQAAAAC/background.gif');
+    background-size: cover;
+    height: 80 vh;
+    padding: 15px;
+}
+
+/* Menu de navigation */
+header.header {
+    display: flex;
+    align-items: center;
+    /* background-color: aqua; */
+}
+
+nav.nav {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    list-style: none;
+    /* background-color: rgb(10, 59, 255); */
+    margin-right: 10%;
+    width: 30%;
+    margin-left: 10%;
+}
+
+nav.nav li {
+    color: rgb(245, 74, 251);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 10px;
+    margin: 10px;
+    margin-top: 20px;
+    background: rgb(20, 197, 229, 0.05);
+    padding: 10px;
+}
+
+/* Titre */
+.big-title {
+    color: black;
+    font-size: 50px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#hop {
+    color: red;
+}
