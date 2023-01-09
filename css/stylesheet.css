@@ -1,4 +1,10 @@
-* {}
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 a {
     color: rgb(245, 74, 251);
@@ -10,6 +16,10 @@ body {
     background-color: rgba(0, 0, 0, 0.697);
     color: rgb(79, 133, 243);
     font-family: Source Code Pro, Consolas, "Courier New", monospace;
+}
+
+li {
+    list-style-type: none;
 }
 
 .header img {
@@ -72,7 +82,7 @@ nav.nav li {
 
 .H1-title {
     color: rgb(245, 74, 251);
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -88,4 +98,23 @@ nav.nav li {
 
 .landing-page {
     margin: 5%;
+}
+
+/* Home Page */
+
+.HN {
+    color: rgb(79, 133, 243);
+    font-size: 50px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 80px;
+}
+
+#app {
+    padding-top: 10%;
+    padding-left: 20%;
+    font-size: 20px;
 }
