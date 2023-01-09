@@ -70,6 +70,16 @@ nav.nav li {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+.H1-title {
+    color: rgb(245, 74, 251);
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
 #hop {
     color: red;
 }
