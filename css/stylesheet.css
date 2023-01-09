@@ -87,6 +87,8 @@ nav.nav li {
     display: flex;
     justify-content: center;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-top: 4%;
+    position: absolute;
 }
 
 
@@ -113,6 +115,19 @@ nav.nav li {
     padding-top: 80px;
 }
 
+.home_pic{
+    width: 10%;
+    height: 10%;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.top{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+}
+/* Contact */
 #app {
     padding-top: 10%;
     padding-left: 20%;
