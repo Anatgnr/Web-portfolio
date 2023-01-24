@@ -22,6 +22,10 @@ li {
     list-style-type: none;
 }
 
+li:hover{
+    box-shadow: 0px 0px 5px rgb(79, 133, 243);
+    }
+
 .header img {
     width: 100px;
     height: 100px;
