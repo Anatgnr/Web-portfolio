@@ -22,12 +22,10 @@ var typewriter = new Typewriter(app, {
 
 });
 typewriter
-    .typeString('Pour me conytacter')
-    .pauseFor(300)
-    .deleteChars(7)
-    .typeString('tacter,')
+    .typeString('Pour me contacter ')
     .pauseFor(200)
     .typeString('voici mon mail :')
+    .typeString('<br/>')
     .typeString('<br/>')
     .pauseFor(300)
     .typeString('<span style="color: #f54afb;">garnieranatole@gmail.com</span>')

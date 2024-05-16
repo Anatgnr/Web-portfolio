@@ -75,6 +75,30 @@ nav.nav li {
     padding: 10px;
 }
 
+nav.nav2 {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    list-style: none;
+    /* background-color: rgb(10, 59, 255); */
+    margin-right: 10%;
+    width: 30%;
+    margin-left: 10%;
+}
+
+nav.nav2 li {
+    color: rgb(245, 74, 251);
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    /* border-radius: 10px; */
+    margin: 10px;
+    margin-top: 20px;
+    /* background: rgb(20, 197, 229, 0.05); */
+    padding: 10px;
+}
+
 /* Titre */
 .big-title {
     color: black;
