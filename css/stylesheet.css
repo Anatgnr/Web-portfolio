@@ -31,6 +31,7 @@ li:hover{
     height: 100px;
     display: flex;
     border-radius: 50%;
+    margin-left: 5%;
     /* margin-left: 30%; */
 }
 
@@ -75,16 +76,22 @@ nav.nav li {
     padding: 10px;
 }
 
-nav.nav2 {
+/* nav.nav2 {
     display: flex;
     flex: 1;
     flex-wrap: wrap;
     justify-content: space-evenly;
     list-style: none;
-    /* background-color: rgb(10, 59, 255); */
     margin-right: 10%;
     width: 30%;
     margin-left: 10%;
+} */
+
+nav.nav2 {
+    display: flex;
+    justify-content: center; /* Centre le conteneur nav2 horizontalement */
+    list-style: none;
+    padding: 0;
 }
 
 nav.nav2 li {
@@ -92,12 +99,14 @@ nav.nav2 li {
     font-size: 20px;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
-    /* border-radius: 10px; */
     margin: 10px;
     margin-top: 20px;
-    /* background: rgb(20, 197, 229, 0.05); */
     padding: 10px;
+    text-align: center; /* Centre le texte à l'intérieur des li */
 }
+
+
+
 
 /* Titre */
 .big-title {
