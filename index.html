@@ -1,24 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<header>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial">
-    <link rel="stylesheet" href="css/stylesheet.css">
-</header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f8f8fa">
+  <title>Anatole Garnier — Ingénieur IA & vision par ordinateur</title>
+  <meta name="description" content="Anatole Garnier, ingénieur en intelligence artificielle à Bordeaux. Vision par ordinateur, robotique, segmentation et systèmes RAG : découvrez mes projets et mon parcours.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://anatgnr.github.io/Web-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Anatole Garnier">
+  <meta property="og:title" content="Anatole Garnier — De l’intelligence. À l’impact.">
+  <meta property="og:description" content="Ingénieur IA à Bordeaux. Des modèles aux applications concrètes : vision par ordinateur, robotique et IA générative.">
+  <meta property="og:url" content="https://anatgnr.github.io/Web-portfolio/">
+  <meta property="og:image" content="https://anatgnr.github.io/Web-portfolio/assets/workspace-social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
+  <meta property="og:image:alt" content="Mon univers de travail : un bureau lumineux, entre technologie et nature.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Anatole Garnier — Ingénieur IA">
+  <meta name="twitter:description" content="Vision par ordinateur, robotique et IA générative. De l’intelligence à l’impact.">
+  <meta name="twitter:image" content="https://anatgnr.github.io/Web-portfolio/assets/workspace-social.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="assets/workspace-1440.webp" imagesrcset="assets/workspace-960.webp 960w, assets/workspace-1440.webp 1440w" imagesizes="(max-width: 700px) 960px, 1160px" fetchpriority="high">
+  <script>
+    (() => {
+      document.documentElement.classList.add('js');
+      let theme;
+      try { theme = localStorage.getItem('portfolio-theme'); } catch (_) {}
+      document.documentElement.dataset.theme = theme === 'light' || theme === 'dark' ? theme : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <script src="js/animation.js" defer></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"ProfilePage","url":"https://anatgnr.github.io/Web-portfolio/","name":"Anatole Garnier — Ingénieur IA","inLanguage":"fr-FR","mainEntity":{"@type":"Person","@id":"https://anatgnr.github.io/Web-portfolio/#anatole","name":"Anatole Garnier","jobTitle":"Ingénieur en intelligence artificielle","description":"Ingénieur IA spécialisé en vision par ordinateur, systèmes RAG et agents LLM.","image":"https://anatgnr.github.io/Web-portfolio/assets/portrait-800.webp","url":"https://anatgnr.github.io/Web-portfolio/","email":"mailto:garnieranatole@gmail.com","homeLocation":{"@type":"Place","name":"Bordeaux, France"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Université de Bordeaux"},"knowsAbout":["Intelligence artificielle","Vision par ordinateur","PyTorch","Segmentation d’images","RAG","Agents LLM","Python"],"sameAs":["https://github.com/Anatgnr"]}}
+  </script>
+</head>
 <body>
-<section class="top-page">
-        <h1 class="H1-title" href="index.html">Accueil</h1>
-</section>
-<section class="page">
-    <nav class="Home-nav">
-        <!-- <li><a class="HN" href="html/main.html">Curriculum Vitae</a> </li>
-        <li><a class="HN" href="html/A-propos.html">Centres d'intérêt</a></li>
-        <li><a class="HN" href="html/contact.html">Contact</a></li> -->
-        <a class="HN" href="html/main.html">Curriculum Vitae</a>>
-        <a class="HN" href="html/A-propos.html">Langues et Centres d'intérêt</a>
-        <a class="HN" href="html/contact.html">Contact</a>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="arrow-up-right" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+    <symbol id="arrow-right" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="moon" viewBox="0 0 24 24"><path d="M20.8 13.2A9 9 0 0 1 10.8 3a9 9 0 1 0 10 10.2Z"/></symbol>
+    <symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="3"/><path d="M16 8V6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v7a3 3 0 0 0 3 3h2"/></symbol>
+  </defs></svg>
+  <header class="site-header">
+    <nav class="navigation container" aria-label="Navigation principale">
+      <a class="wordmark" href="#accueil" aria-label="Anatole Garnier, accueil">anatole<span>.</span></a>
+      <div class="nav-links" id="nav-links"><a href="#projets">Projets</a><a href="#expertise">Expertise</a><a href="#parcours">Parcours</a><a href="#apropos">À propos</a></div>
+      <div class="nav-actions">
+        <button class="icon-button theme-toggle" type="button" aria-label="Activer le thème sombre" title="Changer de thème"><svg class="icon moon-icon"><use href="#moon"/></svg><svg class="icon sun-icon"><use href="#sun"/></svg></button>
+        <a class="nav-contact" href="#contact">Parlons ensemble <span aria-hidden="true">↗</span></a>
+        <button class="icon-button menu-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+      </div>
     </nav>
-</section>
+  </header>
+  <main id="contenu">
+    <section class="hero container" id="accueil" aria-labelledby="hero-title">
+      <p class="eyebrow hero-eyebrow"><span class="small-dot"></span> ANATOLE GARNIER <span class="eyebrow-divider">/</span> INGÉNIEUR IA</p>
+      <h1 id="hero-title">De l’intelligence.<br><span class="gradient-text">À l’impact.</span></h1>
+      <p class="hero-description">Je donne aux machines les moyens de voir,<br class="desktop-break"> de comprendre. Et surtout, d’être utiles.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#projets">Explorer mes projets <svg class="icon"><use href="#arrow-right"/></svg></a><a class="text-link" href="assets/Anatole-Garnier-CV.pdf" download>Mon CV <svg class="icon"><use href="#download"/></svg></a></div>
+      <div class="hero-meta"><span>Bordeaux, France</span><span class="meta-line"></span><span>Vision par ordinateur & IA générative</span></div>
+    </section>
+    <section class="workspace" aria-label="Entrez dans mon univers de travail">
+      <div class="workspace-stage">
+        <div class="desk-frame">
+          <img class="desk-image" src="assets/workspace-1440.webp" srcset="assets/workspace-960.webp 960w, assets/workspace-1440.webp 1440w" sizes="(max-width: 700px) 960px, 1160px" width="1440" height="960" alt="Un bureau chaleureux, un grand écran, des plantes et la lumière du soleil." fetchpriority="high" decoding="async">
+          <div class="monitor-display" aria-hidden="true">
+            <div class="monitor-top"><span class="monitor-logo">a.</span><span>UN PEU DE CODE. BEAUCOUP DE POSSIBILITÉS.</span><span>✳</span></div>
+            <div class="monitor-center"><div class="vision-orb"><i></i><i></i><i></i><i></i><i></i><i></i></div><span>Voir plus loin.</span><small>L’intelligence au service du réel.</small></div>
+            <div class="monitor-bottom"><span>VISION</span><span>ROBOTIQUE</span><span>IA GÉNÉRATIVE</span></div>
+          </div>
+        </div>
+        <div class="workspace-caption"><span class="caption-dot"></span> MON UNIVERS, EN QUELQUES SCROLLS <span class="scroll-arrow" aria-hidden="true">↓</span></div>
+        <div class="portal-message" aria-hidden="true"><span class="eyebrow">BIENVENUE DE L’AUTRE CÔTÉ</span><p>Des idées.<br><span class="gradient-text">Du concret.</span></p><span>Découvrez ce qui se passe derrière l’écran.</span></div>
+        <a class="skip-experience" href="#projets">Passer aux projets <span aria-hidden="true">↘</span></a>
+      </div>
+    </section>
+    <section class="projects section container" id="projets" aria-labelledby="projects-title">
+      <div class="section-heading"><div><p class="eyebrow">01 / PROJETS SÉLECTIONNÉS</p><h2 id="projects-title">L’IA, hors de la théorie.</h2></div><p class="section-intro">De la robotique à l’archéologie.<br>Un problème réel, une réponse sur mesure.</p></div>
+      <div class="project-toolbar"><div class="filters" role="group" aria-label="Filtrer les projets"><button class="filter is-active" type="button" data-filter="all" aria-pressed="true">Tous les projets <span>03</span></button><button class="filter" type="button" data-filter="vision" aria-pressed="false">Vision par ordinateur</button><button class="filter" type="button" data-filter="generative" aria-pressed="false">IA générative</button></div><span class="project-count" aria-live="polite">03 projets</span></div>
+      <div class="project-grid">
+        <article class="project-card project-robotics" data-category="vision">
+          <div class="project-visual robotics-visual" aria-hidden="true"><div class="visual-topline"><span>POLLEN ROBOTICS</span><span class="live-label"><i></i> VISION EN TEMPS RÉEL</span></div><div class="scan-scene"><div class="scan-cross cross-one"></div><div class="scan-cross cross-two"></div><svg class="robot-hand" viewBox="0 0 440 300"><defs><linearGradient id="handGradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dbdfdf"/><stop offset=".5" stop-color="#aeb7b7"/><stop offset="1" stop-color="#6c7c7b"/></linearGradient><pattern id="handGrid" width="13" height="13" patternUnits="userSpaceOnUse"><path d="M13 0H0v13" fill="none" stroke="#7bdac5" stroke-width=".5" opacity=".5"/></pattern></defs><g transform="translate(54 -6) rotate(18 180 170)"><path d="m137 287-8-66-39-45c-14-17 4-33 17-22l29 26-6-105c-1-19 23-20 25-2l7 70 1-101c0-19 25-20 26 0l4 99 7-87c2-18 25-17 24 2l-4 97 10-63c3-17 25-12 23 4l-8 94c-1 28-13 48-21 69l-5 31Z" fill="url(#handGradient)" stroke="#ced9d6" stroke-width="1.5"/><path d="m137 287-8-66-39-45c-14-17 4-33 17-22l29 26-6-105c-1-19 23-20 25-2l7 70 1-101c0-19 25-20 26 0l4 99 7-87c2-18 25-17 24 2l-4 97 10-63c3-17 25-12 23 4l-8 94c-1 28-13 48-21 69l-5 31Z" fill="url(#handGrid)"/><path d="m140 199 29-18 37 2 20 24m-57-26-7-38m44 40-13-42m-24 40 8 60m29-58-29 58-34-13" fill="none" stroke="#66eed0" stroke-width="1.5"/><g fill="#91ffe3"><circle cx="169" cy="181" r="4"/><circle cx="206" cy="183" r="4"/><circle cx="177" cy="241" r="4"/></g></g></svg><div class="scan-box"><span>object_01 <b>segmentation</b></span><i></i></div><div class="scan-readout"><strong>12<span>ms</span></strong><small>PAR IMAGE</small></div></div><div class="visual-bottomline"><span>FAST SAM + ATTENTION</span><span>01 — 03</span></div></div>
+          <div class="project-content"><div class="project-category">VISION PAR ORDINATEUR <span>2025</span></div><h3>Voir. Comprendre. Agir.</h3><p>La segmentation temps réel au service des prothèses robotiques.</p><div class="project-footer"><span class="project-client">Pollen Robotics</span><button class="round-button" type="button" data-project="robotics" aria-label="Découvrir le projet Pollen Robotics"><svg class="icon"><use href="#plus"/></svg></button></div></div>
+        </article>
+        <article class="project-card project-rag" data-category="generative">
+          <div class="project-visual rag-visual" aria-hidden="true"><div class="visual-topline"><span>STACKEASY</span><span>INTELLIGENCE CONNECTÉE</span></div><div class="rag-diagram"><div class="rag-document doc-one"><span></span><span></span><span></span></div><div class="rag-document doc-two"><span></span><span></span><span></span></div><svg class="rag-connections" viewBox="0 0 440 250"><path d="M70 58C155 58 110 125 218 125S315 68 370 68M72 190C153 190 122 125 218 125s95 63 150 63"/><path d="M220 125V25m0 100v100"/></svg><div class="rag-core"><svg viewBox="0 0 48 48"><path d="m24 6 5 12 13 6-13 5-5 13-6-13L6 24l12-6Z"/></svg></div><span class="rag-node node-one">Recherche</span><span class="rag-node node-two">Synthèse</span><span class="rag-node node-three">Sources citées <b>↗</b></span><div class="rag-answer"><i></i><span>Une réponse. Des sources.</span></div></div><div class="visual-bottomline"><span>RAG HYBRIDE · AGENTS LLM</span><span>02 — 03</span></div></div>
+          <div class="project-content"><div class="project-category">IA GÉNÉRATIVE <span>2025</span></div><h3>La bonne information.<br>Au bon moment.</h3><p>Relier les connaissances pour des réponses pertinentes et explicables.</p><div class="project-footer"><span class="project-client">StackEasy</span><button class="round-button" type="button" data-project="rag" aria-label="Découvrir le projet StackEasy"><svg class="icon"><use href="#plus"/></svg></button></div></div>
+        </article>
+        <article class="project-card project-archeology" data-category="vision">
+          <div class="project-visual archeology-visual" aria-hidden="true"><div class="visual-topline"><span>ARCHÉOVISION</span><span>RÉVÉLER L’INVISIBLE</span></div><div class="stone-scene"><svg class="ancient-stone" viewBox="0 0 440 290"><defs><linearGradient id="stoneGradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dfd2bc"/><stop offset="1" stop-color="#ab987c"/></linearGradient><pattern id="stoneLines" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><path d="M0 0v9" stroke="#8b7759" stroke-width=".5" opacity=".25"/></pattern></defs><path d="m86 42 180-15 78 57-8 141-82 44-155-29-30-82Z" fill="url(#stoneGradient)"/><path d="m86 42 180-15 78 57-8 141-82 44-155-29-30-82Z" fill="url(#stoneLines)"/><path d="m100 77 57 38-29 50 50 26 45-54 48 16 35-49-56-36-34 40-41-29-39 29m42 83 36 33 57-37 40 15" fill="none" stroke="#92816b" stroke-width="3" opacity=".5"/><g fill="#6199d1" opacity=".65" stroke="#acd0ff" stroke-width="1.5"><path d="m136 80 24 18 38-10 21 20-27 32-44-21Z"/><path d="m222 154 37-19 22 22-12 42-31-6Z"/><path d="m151 189 26 14-9 23-29-7Z"/></g><g fill="none" stroke="#729ecd" stroke-dasharray="4 5" opacity=".7"><path d="M105 59h197v181H105Z"/><path d="M196 55v192M101 148h206"/></g><circle cx="196" cy="148" r="5" fill="#e7f3ff"/></svg><span class="stone-label">PIGMENT BLEU DÉTECTÉ <i></i></span><div class="precision-label"><strong>+30<span>%</span></strong><small>DE PRÉCISION</small></div></div><div class="visual-bottomline"><span>U-NET · DICE LOSS</span><span>03 — 03</span></div></div>
+          <div class="project-content"><div class="project-category">VISION & PATRIMOINE <span>2024</span></div><h3>Un nouveau regard<br>sur le passé.</h3><p>Retrouver les pigments antiques grâce à la segmentation d’images.</p><div class="project-footer"><span class="project-client">Archéovision</span><button class="round-button" type="button" data-project="archeology" aria-label="Découvrir le projet Archéovision"><svg class="icon"><use href="#plus"/></svg></button></div></div>
+        </article>
+      </div>
+      <p class="visual-note">Visualisations illustratives des projets · Résultats issus de mon parcours</p>
+    </section>
+    <section class="expertise section" id="expertise" aria-labelledby="expertise-title"><div class="container">
+      <div class="section-heading"><div><p class="eyebrow">02 / EXPERTISE</p><h2 id="expertise-title">De la donnée.<br>À ce qu’on en fait.</h2></div><p class="section-intro">Comprendre le besoin. Choisir les bons outils.<br>Construire une solution qui a du sens.</p></div>
+      <div class="expertise-grid"><article class="expertise-item"><span class="expertise-number">01</span><svg class="expertise-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 24s7-13 19-13 19 13 19 13-7 13-19 13S5 24 5 24Z"/><circle cx="24" cy="24" r="7"/></svg><h3>Donner la vue<br>aux machines.</h3><p>Détection, segmentation et interprétation d’images pour la robotique et l’analyse du patrimoine.</p><ul class="tags" aria-label="Outils de vision"><li>PyTorch</li><li>OpenCV</li><li>SAM</li><li>YOLO</li></ul></article><article class="expertise-item"><span class="expertise-number">02</span><svg class="expertise-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="16" y="16" width="16" height="16" rx="5"/><path d="M24 4v12m0 16v12M4 24h12m16 0h12M9 9l9 9m12 12 9 9M9 39l9-9m12-12 9-9"/></svg><h3>Connecter<br>les connaissances.</h3><p>Systèmes RAG hybrides et orchestration d’agents LLM, avec des réponses ancrées dans leurs sources.</p><ul class="tags" aria-label="Outils d’IA générative"><li>RAG</li><li>LLM</li><li>Multi-agents</li></ul></article><article class="expertise-item"><span class="expertise-number">03</span><svg class="expertise-icon" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="10" rx="15" ry="6"/><path d="M9 10v27c0 8 30 8 30 0V10M9 23c0 8 30 8 30 0"/></svg><h3>Partir de<br>bases solides.</h3><p>Nettoyer, structurer et traiter les données. Concevoir les bases et les requêtes qui rendent l’IA possible.</p><ul class="tags" aria-label="Outils de traitement des données"><li>Python</li><li>SQL</li><li>C</li><li>Bases de données</li></ul></article></div>
+    </div></section>
+    <section class="journey section container" id="parcours" aria-labelledby="journey-title"><div class="section-heading"><div><p class="eyebrow">03 / PARCOURS</p><h2 id="journey-title">Curieux, par nature.<br>Ingénieur, par passion.</h2></div><a class="text-link" href="assets/Anatole-Garnier-CV.pdf" download>Télécharger mon CV <svg class="icon"><use href="#download"/></svg></a></div>
+      <div class="journey-layout"><div class="journey-aside"><p>Chaque expérience,<br>une nouvelle perspective.</p><span>RECHERCHE · DÉVELOPPEMENT · COLLABORATION</span></div><div class="timeline">
+        <details class="timeline-item" open><summary><span class="timeline-year">2025</span><span class="timeline-role"><strong>Ingénieur IA — RAG & agents LLM</strong><span>StackEasy</span></span><svg class="icon"><use href="#plus"/></svg></summary><div class="timeline-body"><p>Conception d’un système RAG hybride associant recherche vectorielle et symbolique. Orchestration de multi-agents pour automatiser le traitement et la synthèse d’information, avec citations des documents sources.</p></div></details>
+        <details class="timeline-item"><summary><span class="timeline-year">2025</span><span class="timeline-role"><strong>Segmentation temps réel pour prothèses</strong><span>Pollen Robotics</span></span><svg class="icon"><use href="#plus"/></svg></summary><div class="timeline-body"><p>Développement d’un module de segmentation d’objets pour prothèses robotiques. Intégration d’un mécanisme d’attention dans Fast SAM pour produire des masques précis en 12 ms par image.</p></div></details>
+        <details class="timeline-item"><summary><span class="timeline-year">2024</span><span class="timeline-role"><strong>Développement en vision par ordinateur</strong><span>Archéovision</span></span><svg class="icon"><use href="#plus"/></svg></summary><div class="timeline-body"><p>Application de segmentation pour la reconnaissance de pigments bleus sur les pierres du temple d’Apollon à Delphes. Utilisation de U-Net et de Dice Loss, avec une amélioration de précision de 30 % par rapport au POC initial.</p></div></details>
+        <div class="education-label">FORMATION</div><div class="education-item"><span class="timeline-year">2023 — 2025</span><div><h3>Master Intelligence Artificielle</h3><p>Université de Bordeaux</p></div></div><div class="education-item"><span class="timeline-year">2020 — 2023</span><div><h3>Licence Informatique</h3><p>Université de Bordeaux</p></div></div>
+      </div></div>
+    </section>
+    <section class="about section" id="apropos" aria-labelledby="about-title"><div class="about-layout container"><div class="portrait-wrap"><img src="assets/portrait-800.webp" srcset="assets/portrait-480.webp 480w, assets/portrait-800.webp 800w" sizes="(max-width: 700px) 90vw, 440px" width="800" height="1202" alt="Portrait d’Anatole Garnier" loading="lazy" decoding="async"><span class="portrait-caption"><span class="small-dot"></span> ANATOLE, TOUT SIMPLEMENT.</span></div><div class="about-copy"><p class="eyebrow">04 / DERRIÈRE L’ÉCRAN</p><h2 id="about-title">La curiosité<br>ne s’arrête pas<br><span>au code.</span></h2><p>Je suis Anatole, ingénieur IA à Bordeaux. Ce qui m’anime : faire le lien entre la recherche et les usages concrets, du mouvement d’une prothèse à la couleur oubliée d’une pierre antique.</p><p>En dehors de l’écran, je garde le même goût d’explorer. La photographie pour changer de regard, la production musicale pour créer, le sport pour l’énergie collective. Et les voyages pour tout le reste.</p><div class="about-details"><span>Photo & musique</span><span>Volley & football</span><span>Tokyo, Londres, Munich</span></div><div class="languages"><span>Français <b>Natif</b></span><span>Anglais <b>C1</b></span><span>Allemand <b>B2</b></span></div></div></div></section>
+    <section class="contact section container" id="contact" aria-labelledby="contact-title"><p class="eyebrow"><span class="small-dot"></span> ET SI ON CONSTRUISAIT LA SUITE ?</p><h2 id="contact-title">Les bonnes idées<br>commencent par <span class="gradient-text">un échange.</span></h2><p>Un projet d’IA, une collaboration ou simplement envie de discuter ?<br>Je serais ravi de vous lire.</p><div class="contact-actions"><a class="button button-primary" href="mailto:garnieranatole@gmail.com">Parlons de votre projet <svg class="icon"><use href="#arrow-up-right"/></svg></a><a class="text-link" href="https://github.com/Anatgnr" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon"><use href="#arrow-up-right"/></svg></a></div><div class="email-line"><a href="mailto:garnieranatole@gmail.com">garnieranatole@gmail.com</a><button class="icon-button copy-email" type="button" aria-label="Copier l’adresse e-mail" title="Copier l’adresse e-mail"><svg class="icon"><use href="#copy"/></svg></button></div><span class="copy-feedback" role="status" aria-live="polite"></span></section>
+  </main>
+  <footer class="site-footer container"><a class="wordmark" href="#accueil">anatole<span>.</span></a><p>© <span id="copyright-year">2026</span> Anatole Garnier</p><span class="footer-location">Conçu avec soin, à Bordeaux.</span><a class="back-top" href="#accueil">Retour en haut ↑</a></footer>
+  <dialog class="project-dialog" aria-labelledby="dialog-title"><button class="icon-button dialog-close" type="button" aria-label="Fermer le projet"><svg class="icon"><use href="#close"/></svg></button><div class="dialog-content"><p class="eyebrow" id="dialog-eyebrow"></p><h2 id="dialog-title"></h2><p class="dialog-intro" id="dialog-intro"></p><div class="dialog-stat"><strong id="dialog-stat-value"></strong><span id="dialog-stat-label"></span></div><div id="dialog-sections"></div><ul class="tags" id="dialog-tags"></ul><a class="text-link dialog-contact" href="mailto:garnieranatole@gmail.com">Discutons de ce projet <svg class="icon"><use href="#arrow-up-right"/></svg></a></div></dialog>
 </body>
-
 </html>

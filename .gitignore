@@ -1,0 +1,5 @@
+_site/
+.artifacts/
+__pycache__/
+*.pyc
+.venv/

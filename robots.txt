@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anatgnr.github.io/Web-portfolio/sitemap.xml
