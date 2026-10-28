@@ -10,6 +10,7 @@ from threading import Thread
 from urllib.request import urlopen
 import json
 import os
+import re
 
 from playwright.sync_api import sync_playwright, expect
 
@@ -47,6 +48,16 @@ def jump(page, top):
     page.wait_for_timeout(120)
 
 
+def click_bar_control(page, selector):
+    # Use viewport coordinates: Chrome's scrollIntoView for a sticky bar can
+    # otherwise scroll the scene even though the control is already visible.
+    control = page.locator(selector)
+    expect(control).to_be_visible()
+    page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
+    bounds = control.bounding_box()
+    page.mouse.click(bounds['x'] + bounds['width']/2, bounds['y'] + bounds['height']/2)
+
+
 def accessibility(page, label):
     source = ARTIFACTS / "axe.min.js"
     if not source.exists():
@@ -73,6 +84,12 @@ try:
         page.goto(BASE, wait_until="networkidle")
         check("One primary heading and main landmark", page.locator('h1').count() == 1 and page.locator('main').count() == 1)
         check("Light system preference applied", page.locator('html').get_attribute('data-theme') == 'light')
+        expect(page.locator('.desktop-dock')).not_to_be_visible()
+        check("Dock is inert outside the computer", page.locator('.desktop-dock').evaluate('e=>e.inert'))
+        check("Monitor follows the light background", page.locator('.monitor-display').evaluate('e=>getComputedStyle(e).backgroundColor') == page.locator('body').evaluate('e=>getComputedStyle(e).backgroundColor'))
+        click_bar_control(page,'.theme-toggle')
+        check("Monitor follows the dark background", page.locator('.monitor-display').evaluate('e=>getComputedStyle(e).backgroundColor') == page.locator('body').evaluate('e=>getComputedStyle(e).backgroundColor'))
+        click_bar_control(page,'.theme-toggle')
         data = json.loads(page.locator('script[type="application/ld+json"]').text_content())
         check("Structured profile data valid", data['@type'] == 'ProfilePage' and data['mainEntity']['name'] == 'Anatole Garnier')
         check("Canonical URL matches GitHub Pages", page.locator('link[rel="canonical"]').get_attribute('href') == 'https://anatgnr.github.io/Web-portfolio/')
@@ -95,20 +112,45 @@ try:
         samples = []
         for fraction in [0, .45, 1, .45, 0]:
             jump(page, start + geometry['distance'] * fraction)
-            samples.append(page.locator('.workspace').evaluate("e=>({zoom:parseFloat(getComputedStyle(e).getPropertyValue('--zoom')),message:parseFloat(getComputedStyle(e).getPropertyValue('--message-opacity'))})"))
+            samples.append(page.locator('.workspace').evaluate("e=>({zoom:parseFloat(getComputedStyle(e).getPropertyValue('--zoom')),message:parseFloat(getComputedStyle(e).getPropertyValue('--message-opacity')),desktop:document.documentElement.classList.contains('is-desktop'),header:document.querySelector('.site-header').offsetHeight})"))
         check("Scroll zoom advances and reverses", samples[1]['zoom'] > samples[0]['zoom'] and abs(samples[4]['zoom']-samples[0]['zoom']) < .01 and abs(samples[3]['zoom']-samples[1]['zoom']) < .02)
         check("Screen-entry message appears at full zoom", samples[2]['message'] > .99)
+        check("Mac interface enters and exits with scroll", samples[2]['desktop'] and not samples[0]['desktop'] and not samples[4]['desktop'])
+        check("Navigation transition preserves page geometry", len({s['header'] for s in samples}) == 1)
         jump(page, start + geometry['distance'] * .45)
         page.screenshot(path=str(ARTIFACTS/'desktop-immersion.png'))
+        jump(page, start + geometry['distance'])
+        page.wait_for_timeout(350)
+        expect(page.locator('.desktop-dock')).to_be_visible()
+        check("Dock enables seven working shortcuts", not page.locator('.desktop-dock').evaluate('e=>e.inert') and page.locator('.desktop-dock a').count() == 7)
+        check("LinkedIn shortcut uses the supplied profile", page.locator('.desktop-dock a[href*="linkedin.com"]').get_attribute('href') == 'https://www.linkedin.com/in/anatole-garnier1/')
+        check("Mac menu shows the live clock", bool(page.locator('.desktop-time').text_content()) and page.locator('.desktop-time').get_attribute('datetime') is not None)
+        page.screenshot(path=str(ARTIFACTS/'desktop-macos-light.png'))
+        accessibility(page,'macOS light')
+        click_bar_control(page,'.theme-toggle')
+        expect(page.locator('html')).to_have_attribute('data-theme','dark')
+        expect(page.locator('html')).to_have_class(re.compile('.*is-desktop.*'))
+        page.wait_for_timeout(300)
+        page.screenshot(path=str(ARTIFACTS/'desktop-macos-dark.png'))
+        accessibility(page,'macOS dark')
+        click_bar_control(page,'.theme-toggle')
+        expect(page.locator('html')).to_have_attribute('data-theme','light')
+        page.locator('.dock-exit').click()
+        page.wait_for_function('scrollY < 100')
+        expect(page.locator('html')).not_to_have_class(re.compile('.*is-desktop.*'))
+        expect(page.locator('.desktop-dock')).not_to_be_visible()
+        check("Dock exit returns to the original navigation", page.evaluate('scrollY < 100'))
 
         page.locator('[data-filter="vision"]').click()
-        check("Vision filter shows two projects", page.locator('.project-card:visible').count() == 2)
+        check("Vision filter shows four projects", page.locator('.project-card:visible').count() == 4)
         page.locator('[data-filter="generative"]').click()
         check("Generative filter shows one project", page.locator('.project-card:visible').count() == 1)
         expect(page.locator('.project-count')).to_have_text('01 projet')
+        page.locator('[data-filter="data"]').click()
+        check("Data filter shows Hexacup", page.locator('.project-card:visible').count() == 1 and page.locator('.project-hexacup').is_visible())
         page.locator('[data-filter="all"]').click()
-        check("All projects restored", page.locator('.project-card:visible').count() == 3)
-        for key in ['robotics','rag','archeology']:
+        check("All six projects restored", page.locator('.project-card:visible').count() == 6)
+        for key in ['pandrone','robotics','rag','argus','archeology','hexacup']:
             trigger = page.locator(f'[data-project="{key}"]')
             trigger.click()
             expect(page.locator('dialog')).to_be_visible()
@@ -137,7 +179,10 @@ try:
         check("CV download works", download_info.value.suggested_filename == 'Anatole-Garnier-CV.pdf')
 
         # Explicit theme overrides persist, while a fresh context follows the OS.
-        page.locator('.theme-toggle').click()
+        jump(page,0)
+        expect(page.locator('html')).to_have_attribute('data-theme','light')
+        click_bar_control(page,'.theme-toggle')
+        expect(page.locator('html')).to_have_attribute('data-theme','dark')
         page.reload(wait_until='networkidle')
         check("Chosen dark theme survives reload", page.locator('html').get_attribute('data-theme') == 'dark')
         page.emulate_media(color_scheme='light')
@@ -149,6 +194,8 @@ try:
                 jump(page,0)
                 overflow = page.evaluate('document.documentElement.scrollWidth > innerWidth')
                 check(f"No horizontal overflow at {width}px, {theme}", not overflow)
+                jump(page,page.locator('#projets').evaluate('e=>e.offsetTop-85'))
+                check(f"Mac navigation and Dock fit at {width}px, {theme}", page.locator('html').evaluate('e=>e.classList.contains("is-desktop")') and not page.evaluate('document.documentElement.scrollWidth > innerWidth') and page.locator('.desktop-dock').evaluate('e=>e.getBoundingClientRect().left >= 0 && e.getBoundingClientRect().right <= innerWidth'))
             page.set_viewport_size({'width':1440,'height':1000})
             jump(page, page.locator('#projets').evaluate('e=>e.offsetTop-100'))
             page.wait_for_timeout(750)
@@ -160,12 +207,12 @@ try:
         jump(page,0)
         page.wait_for_timeout(300)
         page.screenshot(path=str(ARTIFACTS/'mobile-top.png'))
-        page.locator('.menu-toggle').click()
+        click_bar_control(page,'.menu-toggle')
         expect(page.locator('.nav-links')).to_be_visible()
         page.locator('.nav-links a[href="#projets"]').click()
         expect(page.locator('.nav-links')).not_to_be_visible()
         check("Mobile menu navigates and closes")
-        page.locator('.menu-toggle').click()
+        click_bar_control(page,'.menu-toggle')
         page.keyboard.press('Escape')
         expect(page.locator('.menu-toggle')).to_be_focused()
         expect(page.locator('.nav-links')).not_to_be_visible()
@@ -174,6 +221,11 @@ try:
         page.wait_for_timeout(750)
         page.screenshot(path=str(ARTIFACTS/'mobile-projects.png'))
         accessibility(page,'mobile light')
+        click_bar_control(page,'.menu-toggle')
+        expect(page.locator('.nav-links')).to_be_visible()
+        check("Mobile Mac menu opens below the bar", page.locator('.nav-links').bounding_box()['y'] >= 39)
+        page.keyboard.press('Escape')
+        page.screenshot(path=str(ARTIFACTS/'mobile-macos.png'))
         page.locator('[data-project="rag"]').click()
         page.screenshot(path=str(ARTIFACTS/'mobile-dialog.png'))
         accessibility(page,'mobile light dialog')
@@ -191,15 +243,22 @@ try:
         system_page.emulate_media(color_scheme='light')
         expect(system_page.locator('html')).to_have_attribute('data-theme','light')
         check("Theme tracks OS changes before an explicit choice")
+        deep_page = system_context.new_page()
+        deep_page.goto(BASE+'#projets',wait_until='networkidle')
+        expect(deep_page.locator('.desktop-dock')).to_be_visible()
+        check("Deep links activate Mac navigation without playing the zoom", deep_page.locator('html').evaluate('e=>e.classList.contains("is-desktop")'))
         reduced = browser.new_context(reduced_motion='reduce',viewport={'width':390,'height':844})
         reduced_page = reduced.new_page()
         reduced_page.goto(BASE,wait_until='networkidle')
         check("Reduced motion removes sticky scene", reduced_page.locator('.workspace-stage').evaluate('e=>getComputedStyle(e).position') == 'relative')
         check("Reduced motion disables smooth scrolling", reduced_page.locator('html').evaluate('e=>getComputedStyle(e).scrollBehavior') == 'auto')
+        jump(reduced_page,reduced_page.locator('#projets').evaluate('e=>e.offsetTop-85'))
+        expect(reduced_page.locator('.desktop-dock')).to_be_visible()
+        check("Dock works with reduced motion")
         static = browser.new_context(java_script_enabled=False,viewport={'width':390,'height':844})
         static_page = static.new_page()
         static_page.goto(BASE,wait_until='networkidle')
-        check("Content and mobile navigation work without JavaScript", static_page.locator('h1').is_visible() and static_page.locator('.nav-links a').first.is_visible() and static_page.locator('.project-card').count() == 3)
+        check("Content and mobile navigation work without JavaScript", static_page.locator('h1').is_visible() and static_page.locator('.nav-links a').first.is_visible() and static_page.locator('.project-card').count() == 6)
         check("No browser JavaScript errors", not report['errors'])
         check("No missing browser resources", not report['failed_requests'])
         browser.close()

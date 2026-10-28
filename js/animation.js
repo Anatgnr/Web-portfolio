@@ -55,16 +55,50 @@
   // Only draw while the scene is nearby, at most once per animation frame.
   const workspace = document.querySelector('.workspace');
   const stage = workspace.querySelector('.workspace-stage');
+  const dock = document.querySelector('.desktop-dock');
+  const desktopTime = document.querySelector('.desktop-time');
+  const desktopDate = document.querySelector('.desktop-date');
+  const timeFormat = new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' });
+  const dateFormat = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+  let desktopMode = false;
+  let clockTimeout;
+  const updateClock = () => {
+    clearTimeout(clockTimeout);
+    if (!desktopMode || document.hidden) return;
+    const now = new Date();
+    desktopTime.textContent = timeFormat.format(now);
+    desktopTime.dateTime = now.toISOString();
+    desktopDate.textContent = dateFormat.format(now);
+    clockTimeout = setTimeout(updateClock, 60050 - Date.now() % 60000);
+  };
+  const setDesktopMode = (active) => {
+    if (active === desktopMode) return;
+    desktopMode = active;
+    root.classList.toggle('is-desktop', active);
+    dock.inert = !active;
+    dock.setAttribute('aria-hidden', String(!active));
+    closeMenu();
+    if (!active && dock.contains(document.activeElement)) {
+      document.querySelector('.navigation .wordmark').focus({ preventScroll: true });
+    }
+    updateClock();
+  };
+  document.addEventListener('visibilitychange', updateClock);
   let sceneVisible = false;
   let framePending = false;
   const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
   const drawScene = () => {
     framePending = false;
-    if (reducedMotion.matches) return;
     const bounds = workspace.getBoundingClientRect();
     const stickyTop = parseFloat(getComputedStyle(stage).top) || 0;
     const distance = bounds.height - stage.offsetHeight;
     const progress = clamp((stickyTop - bounds.top) / Math.max(1, distance));
+    // Derive the mode from position even after a deep link or a large scroll jump.
+    // Keep the geometry unchanged while the navigation changes appearance.
+    setDesktopMode(reducedMotion.matches
+      ? bounds.bottom <= (parseFloat(getComputedStyle(root).scrollPaddingTop) || 104) + 1
+      : progress >= 0.72);
+    if (reducedMotion.matches || !sceneVisible) return;
     const zoomProgress = clamp(progress / 0.85);
     const ease = zoomProgress * zoomProgress * (3 - 2 * zoomProgress);
     const endScale = innerWidth <= 600 ? Math.max(2.6, innerHeight / 160) : Math.max(3.4, innerHeight / 230);
@@ -76,14 +110,14 @@
     workspace.style.setProperty('--message-y', `${24 * (1 - message)}px`);
   };
   const requestScene = () => {
-    if (!sceneVisible || framePending || reducedMotion.matches) return;
+    if (framePending) return;
     framePending = true;
     requestAnimationFrame(drawScene);
   };
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
       sceneVisible = entry.isIntersecting;
-      if (sceneVisible) requestScene();
+      requestScene();
     }, { rootMargin: '100px' }).observe(workspace);
     const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
@@ -104,9 +138,11 @@
     const navObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const link = menu.querySelector(`a[href="#${entry.target.id}"]`);
-        if (!link) return;
-        if (entry.isIntersecting) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
+        const dockLink = dock.querySelector(`[data-section="${entry.target.id}"]`);
+        [link, dockLink].filter(Boolean).forEach((item) => {
+          if (entry.isIntersecting) item.setAttribute('aria-current', 'location');
+          else item.removeAttribute('aria-current');
+        });
       });
     }, { rootMargin: '-20% 0px -50% 0px' });
     document.querySelectorAll('#projets, #expertise, #parcours, #apropos').forEach((section) => navObserver.observe(section));
@@ -116,7 +152,9 @@
   }
   window.addEventListener('scroll', requestScene, { passive: true });
   window.addEventListener('resize', requestScene, { passive: true });
+  window.addEventListener('pageshow', requestScene);
   reducedMotion.addEventListener('change', requestScene);
+  requestScene();
 
   const cards = [...document.querySelectorAll('.project-card')];
   const filters = [...document.querySelectorAll('.filter')];
@@ -135,6 +173,36 @@
   }));
 
   const projects = {
+    pandrone: {
+      eyebrow: 'LaBRI / PANDRONE / DEPUIS OCTOBRE 2026', title: 'Comprendre le monde. En trois dimensions.',
+      intro: 'Recherche et développement de méthodes de perception et de compréhension de scènes 3D pour la surveillance par drone.',
+      stat: '3D', statLabel: 'reconstruction et fusion d’images RGB avec des nuages de points LiDAR.',
+      sections: [
+        ['Le projet', 'Au Laboratoire Bordelais de Recherche en Informatique, je participe à PANDRONE en tant qu’ingénieur d’étude. L’objectif est de construire une représentation cohérente de l’environnement, support à la détection de changements et à l’analyse de scènes pour la surveillance.'],
+        ['Mon approche', 'Étude et prototypage de SLAM et de reconstruction 3D. Développement de pipelines multi-capteurs RGB / LiDAR, recalage des données et correspondances entre images 2D et représentations 3D. Exploration de méthodes de segmentation pour délimiter les objets et les structures.'],
+        ['Un travail en cours', 'Expérimentations sur des séquences enregistrées, notamment KITTI-360, et visualisation des reconstructions obtenues. Le projet est en cours : aucun résultat chiffré définitif n’est présenté.']
+      ], tags: ['SLAM', 'RGB / LiDAR', 'Reconstruction 3D', 'Recalage 2D / 3D', 'KITTI-360']
+    },
+    argus: {
+      eyebrow: 'ARGUS / FÉVRIER — MAI 2025', title: 'Le vivant. En mouvement.',
+      intro: 'Une application de vision par ordinateur pour détecter, segmenter et suivre automatiquement les insectes pollinisateurs.',
+      stat: '>60 %', statLabel: 'de gain de précision par rapport au Proof of Concept initial, selon les résultats du projet.',
+      sections: [
+        ['Le contexte', 'Contribuer à l’analyse automatisée de la biodiversité en suivant les fleurs et les insectes pollinisateurs dans les images.'],
+        ['Mon approche', 'Développement d’un système de détection et de segmentation avec YOLO, puis suivi en temps réel des objets détectés. Analyse des prédictions, validation du système et optimisation des performances avec Python et OpenCV.'],
+        ['Le résultat', 'Une amélioration de plus de 60 % de la précision par rapport au POC initial, ainsi qu’une détection et un suivi en temps réel des éléments observés.']
+      ], tags: ['YOLO', 'OpenCV', 'Tracking', 'Python', 'Biodiversité']
+    },
+    hexacup: {
+      eyebrow: 'HEXACUP / AVRIL — JUIN 2024', title: 'Des données brutes. Des décisions éclairées.',
+      intro: 'Un cycle d’analyse complet, de la collecte des données à la création de profils clients pour le ciblage marketing.',
+      stat: 'Data', statLabel: 'collecte, nettoyage, structuration et exploitation des données.',
+      sections: [
+        ['Le besoin', 'Au sein d’une PME, exploiter les données pour soutenir les stratégies marketing et améliorer le profilage client.'],
+        ['Mon approche', 'Développement de scripts Python pour le web scraping et l’automatisation des traitements. Conception et exécution de requêtes MongoDB, nettoyage des données et création de profils clients.'],
+        ['Au-delà de la donnée', 'Analyse du code source d’applications Android via Android Studio, investigation de l’architecture et résolution d’anomalies techniques. Une expérience mêlant analyse, automatisation et développement mobile.']
+      ], tags: ['Python', 'MongoDB', 'Web scraping', 'Customer profiling', 'Android Studio']
+    },
     robotics: {
       eyebrow: 'POLLEN ROBOTICS / 2025', title: 'Voir. Comprendre. Agir.',
       intro: 'Une vision réactive pour aider les prothèses robotiques à comprendre leur environnement.',
@@ -151,9 +219,9 @@
       stat: 'RAG', statLabel: 'hybride : recherche vectorielle et symbolique, avec orchestration multi-agents.',
       sections: [
         ['Le défi', 'Améliorer la pertinence des réponses et faciliter le traitement de l’information sans perdre le lien avec les documents d’origine.'],
-        ['Mon approche', 'Conception d’un système combinant recherche vectorielle et symbolique. Orchestration d’agents spécialisés intégrant des LLM pour automatiser le traitement et la synthèse d’information.'],
+        ['Mon approche', 'Conception d’un système combinant recherche vectorielle et symbolique, embeddings et bases vectorielles. Orchestration d’agents spécialisés intégrant des LLM pour automatiser le traitement et la synthèse de documents complexes. Participation à l’architecture et à l’optimisation des pipelines IA.'],
         ['Une réponse explicable', 'Implémentation d’une restitution avec citations automatiques des documents issus de la base vectorielle, pour permettre de retrouver les sources des réponses.']
-      ], tags: ['RAG hybride', 'LLM', 'Multi-agents', 'Recherche vectorielle']
+      ], tags: ['RAG hybride', 'LLM', 'CrewAI', 'Hugging Face', 'Python']
     },
     archeology: {
       eyebrow: 'ARCHÉOVISION / 2024', title: 'Un nouveau regard sur le passé.',
